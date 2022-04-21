@@ -1,0 +1,27 @@
+{
+  "name": "restful-academind",
+  "version": "1.0.0",
+  "description": "this is restful api using nodejs,mongodb\r references is academind\r the purpose is only practise",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://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@github.com/riya200-ui/restful-academind.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/riya200-ui/restful-academind/issues"
+  },
+  "homepage": "https://github.com/riya200-ui/restful-academind#readme",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "express": "^4.17.3",
+    "mysql2": "^2.3.3",
+    "nodemon": "^2.0.15",
+    "sequelize": "^6.19.0"
+  }
+}

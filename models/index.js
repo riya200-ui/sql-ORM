@@ -8,7 +8,7 @@ const sequelize = new Sequelize('nodejs-sql','root','',{
     // pool:{max:5,min:0,idle:10000}
     //logging for print in terminal
     logging:false,
-    operatorsAliases: true,
+    operatorsAliases: false,
 
 });
 //check authenticate

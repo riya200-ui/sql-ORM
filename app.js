@@ -9,10 +9,12 @@ app.get("/",(req,res) => {
 })
 
 var userCtrl = require('./controllers/userController');
-//app.get("/add",userCtrl.addUser );
-//app.get("/crud",userCtrl.crudOperation );
-app.get("/crud",userCtrl.querydata );
-
+app.get("/add",userCtrl.addUser );
+app.get("/crud",userCtrl.crudOperation );
+app.get("/query",userCtrl.querydata );
+app.get("/finder",userCtrl.finderData );
+app.get("/setter",userCtrl.setterGetter );
+app.get("/validate",userCtrl.validationCont );
 
 app.listen(port, ()=>{
     console.log(`app is lstening no server:${port}`);

@@ -3,7 +3,7 @@ const  {Sequelize,Op} = require('sequelize');
 //const users = require('../models/users');
 // const Users = db.users if we use this in await db.Users then give deprication warnng
 
-/*var addUser = async (req,res)=> {
+var addUser = async (req,res)=> {
     
     //const user=({name:'Test',email:'test@gmail.com'});
     
@@ -24,7 +24,7 @@ const  {Sequelize,Op} = require('sequelize');
     })
     .catch(err=> {
         console.log("error");
-    });
+    });*/
     
     let data = db.User.build({name:'est',email:'est@gmail.com'});
     await data.save()
@@ -43,7 +43,7 @@ const  {Sequelize,Op} = require('sequelize');
     });
     let response = {
         data:'ok'
-    }*/
+    }
     //db with id 2,by defalut returns lots of metadata,to turn off use plain
     
     
@@ -55,13 +55,13 @@ const  {Sequelize,Op} = require('sequelize');
     }).catch((err) => {
     console.log("error")
     })*/
-//}
+}
 
-/*var crudOperation  = async(req,res)=> {
+var crudOperation  = async(req,res)=> {
 
      //insert
-    /*const data= await db.User.create({name:'Test',email:'test@gmail.com'})
-    console.log(data.id);*/
+    const data= await db.User.create({name:'Test',email:'test@gmail.com'})
+    console.log(data.id);
 
     //update
     /*const data = await db.User.update({name:'priya',email:'riya@gmail.com'},{
@@ -85,21 +85,21 @@ const  {Sequelize,Op} = require('sequelize');
     /*const data = await db.User.findAll({});
     let response ={
         data:data
-    }
-    /*let response ={
-        data:'ok crud'
     }*/
-    // res.status(200).json(response);
+    let response ={
+        data:'ok crud'
+    }
+    res.status(200).json(response);
      
-//}
+}
 
 var querydata = async(req,res) => {
 
-    /*const data = await db.User.create(
+    const data = await db.User.create(
         {name:'devarsh',email:'dev@gmail.com','gender':'male'},
         {fields:['email','gender']}
     )
-    console.log('query create')*/
+    console.log('query create')
 
     //select
     /*let data = await db.User.findAll({
@@ -144,15 +144,89 @@ var querydata = async(req,res) => {
         offset:1
     });*/
 
-    let data = await db.User.count({});
+    //let data = await db.User.count({});
     let response ={
         data:data
     }
     res.status(200).json(response);
 };
 
+var finderData = async (req,res)=> {
+    //let data = await db.User.findAll({});
+    //let data = await db.User.findOne({}); 
+    //let data = await db.User.findByPk(4);
+    //let data = await db.User.findAndCountAll({
+     //   where:{
+      //      email:'dev@gmail.com'
+      //  }
+    //});
+
+    let [data,created] = await db.User.findOrCreate({
+        where:{name:'dummy'},
+        defaults:{
+            email:'dummy@gmail.com',
+            gender:'male'
+        }
+    })
+    let response = {
+        data : data,
+        add:created
+    }
+    res.status(200).json(response);
+}
+
+var setterGetter = async(req,res) => {
+   // let data = await db.User.create({name:'manu',email:'manu@gmail.com',gender:'male'});
+    let data = await db.User.findAll({});
+    
+    let response = {
+        data:data
+    }
+    res.status(200).json(response);
+}
+
+var validationCont = async(req,res)=> {
+    try{
+        let data = await db.User.create({name:'jinal',email:'jinal@gmail.com',gender:'female'});
+        console.log('sucesssfully')
+    }catch(e){
+        console.log('error');
+
+        const messages = {};
+        e.errors.forEach((error) => {
+            let message;
+            console.log(error);
+            switch (error.validatorkey){
+                case 'not_unique':
+                    message = 'Duplicate Email';
+                    break;
+
+                case 'isIn':
+                    message = 'Gender Not in Male/Female';
+                    break;
+                    
+                case 'equals':
+                    message = 'Gender Not  Male';
+                    console.log(message);
+                    break;    
+            }
+            messages[error.path]= message;
+        })
+
+    }
+    
+    let response = {
+        data: 'data'
+    }
+
+    res.status(200).json(response);
+} 
+
 module.exports ={ 
-   // addUser ,
-    //crudOperation ,
-    querydata
+    addUser ,
+    crudOperation ,
+    querydata,
+    finderData,
+    setterGetter,
+    validationCont
 }
