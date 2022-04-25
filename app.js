@@ -15,6 +15,7 @@ app.get("/query",userCtrl.querydata );
 app.get("/finder",userCtrl.finderData );
 app.get("/setter",userCtrl.setterGetter );
 app.get("/validate",userCtrl.validationCont );
+app.get("/rawquery",userCtrl.rawQuery );
 
 app.listen(port, ()=>{
     console.log(`app is lstening no server:${port}`);

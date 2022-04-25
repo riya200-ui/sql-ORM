@@ -1,5 +1,8 @@
 var db = require('../models');
-const  {Sequelize,Op} = require('sequelize');
+const  {Sequelize,Op, QueryTypes} = require('sequelize');
+const {response} = require('express');
+const { User } = require('../models');
+
 //const users = require('../models/users');
 // const Users = db.users if we use this in await db.Users then give deprication warnng
 
@@ -222,11 +225,43 @@ var validationCont = async(req,res)=> {
     res.status(200).json(response);
 } 
 
+var rawQuery = async(req,res)=> {
+    try{
+        console.log('yess');
+        //db.User = require('./users')(sequelize,Sequelize); this users is require
+        let data = await db.sequelize.query("Select * from users  where gender = $gender ", {
+        type: QueryTypes.SELECT,  
+        model: User,
+        mapToModel : true,
+        raw: true,
+       // replacements :{searchEmail:'%@gmail.com'} //email LIKE :searchEmail 
+       // replacements :{gender:['male','female']} //gender IN(:gender)
+        // replacements :{gender:['male','female']} //gender IN(:gender)
+        //replacements :['female'] //gender = ? 
+       // replacements : {gender:'male'} //gender = :gender
+        bind:{gender:'male'}
+    });
+  
+    let response = {
+        data : 'data',
+        record: data
+    }
+    res.status(200).json(response);
+}catch{ 
+    console.log('raw query error');
+}
+
+    
+
+    
+}
+
 module.exports ={ 
     addUser ,
     crudOperation ,
     querydata,
     finderData,
     setterGetter,
-    validationCont
+    validationCont,
+    rawQuery
 }

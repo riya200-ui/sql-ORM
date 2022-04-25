@@ -7,7 +7,7 @@ const sequelize = new Sequelize('nodejs-sql','root','',{
     dialect:'mysql',
     // pool:{max:5,min:0,idle:10000}
     //logging for print in terminal
-    logging:false,
+    logging:true,
     operatorsAliases: false,
 
 });
