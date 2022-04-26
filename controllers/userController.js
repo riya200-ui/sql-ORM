@@ -1,7 +1,7 @@
 var db = require('../models');
 const  {Sequelize,Op, QueryTypes} = require('sequelize');
 const {response} = require('express');
-const { User } = require('../models');
+const { User, posts , tags, post_tag} = require('../models');
 
 //const users = require('../models/users');
 // const Users = db.users if we use this in await db.Users then give deprication warnng
@@ -63,7 +63,7 @@ var addUser = async (req,res)=> {
 var crudOperation  = async(req,res)=> {
 
      //insert
-    const data= await db.User.create({name:'Test',email:'test@gmail.com'})
+    const data= await db.User.create({name:'Test',email:''})
     console.log(data.id);
 
     //update
@@ -249,12 +249,103 @@ var rawQuery = async(req,res)=> {
     res.status(200).json(response);
 }catch{ 
     console.log('raw query error');
+    }
 }
 
-    
+
+var oneToOne = async(req,res) => {
+  
+
+    let data = await db.User.findAll({
+        attributes:['name','email'],
+        include:[{
+            model:posts,
+            as:'postDetail',
+            attributes:['title',['name','PostName']]
+        }],
+        where : {id:8}
+       
+    });
+
+
+
+    /*let response = {
+        data : 'data',
+        record: data
+    }*/
+    res.status(200).json(data);
+}
+
+var belongsTo = async(req,res) => {
+  
+
+    let data = await db.posts.findAll({
+       // attributes:['name','email'],
+        include:[{
+            model:User,
+           // as:'postDetail',
+           // attributes:['title',['name','PostName']]
+      }],
+ 
+       
+    });
+
+
+
+    /*let response = {
+        data : 'data',
+        record: data
+    }*/
+    res.status(200).json(data);
+}
+
+var oneToMany = async(req,res) => {
+  
+
+    let data = await db.User.findAll({
+        attributes:['name','email'],
+        include:[{
+            model:posts,
+            as:'postDetail',
+            attributes:['title',['name','PostName']]
+        }],
+        where : {id:8}
+       
+    });
+
+
+
+    /*let response = {
+        data : 'data',
+        record: data
+    }*/
+    res.status(200).json(data);
+}
+
+var manyToMany = async(req,res) =>{
+   
+    /*const data = await db.posts.findAll({
+        attributes:['title','content'],
+        include:[{
+            model:tags,
+            attributes:['name']
+        }]
+    })*/
+
+    //tag to post
+    const data = await db.tags.findAll({
+        attributes:['name'],
+        include:[{
+            model:posts,
+            attributes:['title']
+        }]
+    })
+
 
     
+    res.status(200).json(data)
 }
+
 
 module.exports ={ 
     addUser ,
@@ -263,5 +354,9 @@ module.exports ={
     finderData,
     setterGetter,
     validationCont,
-    rawQuery
+    rawQuery,
+    oneToOne,
+    belongsTo,
+    oneToMany,
+    manyToMany
 }

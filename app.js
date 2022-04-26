@@ -16,6 +16,10 @@ app.get("/finder",userCtrl.finderData );
 app.get("/setter",userCtrl.setterGetter );
 app.get("/validate",userCtrl.validationCont );
 app.get("/rawquery",userCtrl.rawQuery );
+app.get("/oneToOne",userCtrl.oneToOne );
+app.get("/belongsTo",userCtrl.belongsTo );
+app.get("/oneToMany",userCtrl.oneToMany );
+app.get("/manyToMany",userCtrl.manyToMany );
 
 app.listen(port, ()=>{
     console.log(`app is lstening no server:${port}`);
